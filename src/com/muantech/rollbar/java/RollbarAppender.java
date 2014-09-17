@@ -1,10 +1,5 @@
 package com.muantech.rollbar.java;
 
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Map;
-
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Level;
 import org.apache.log4j.MDC;
@@ -13,6 +8,12 @@ import org.apache.log4j.helpers.LogLog;
 import org.apache.log4j.spi.LoggingEvent;
 import org.apache.log4j.spi.ThrowableInformation;
 import org.json.JSONException;
+
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 
 public class RollbarAppender extends AppenderSkeleton {
 
@@ -64,7 +65,9 @@ public class RollbarAppender extends AppenderSkeleton {
     private Map<String, Object> getContext(final LoggingEvent event) {
 
         @SuppressWarnings("unchecked")
-        final Map<String, Object> context = MDC.getContext();
+        Map<String, Object> context = MDC.getContext();
+        if(context == null)
+            context = new HashMap<>();
         context.put("LOG_BUFFER", new ArrayList<String>(LOG_BUFFER));
 
         return context;

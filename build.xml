@@ -5,6 +5,7 @@
   <property name="build.dir" location="build"/>
   <property name="classes.build.dir" location="${build.dir}/classes"/>
   <property name="jar.file" location="${build.dir}/dist/rollbar-java.jar"/>
+  <property name="sources.file" location="${build.dir}/dist/rollbar-java-sources.jar"/>
   <path id="compile.classpath">
     <fileset dir="${lib.dir}">
       <include name="*.jar"/>
@@ -20,7 +21,7 @@
     </javac>
   </target>
   <target name="package" depends="compile">
-    <jar jarfile="${jar.file}" basedir="${classes.build.dir}">
-    </jar>
+    <jar jarfile="${jar.file}" basedir="${classes.build.dir}"/>
+    <jar jarfile="${sources.file}" basedir="${java.src.dir}"/>
   </target>
 </project>
