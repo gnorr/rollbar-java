@@ -11,8 +11,10 @@ import org.json.JSONException;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class RollbarAppender extends AppenderSkeleton {
@@ -30,11 +32,15 @@ public class RollbarAppender extends AppenderSkeleton {
 
     private String apiKey;
     private String env;
+    private List<String> enabledEnvs = new ArrayList<>();
     private String url = "https://api.rollbar.com/api/1/item/";
 
     @Override
     protected void append(final LoggingEvent event) {
         if (!enabled) return;
+
+        if(!enabledEnvs.isEmpty() && !enabledEnvs.contains(env))
+            return;
 
         try {
 
@@ -93,6 +99,12 @@ public class RollbarAppender extends AppenderSkeleton {
 
     public void setEnv(final String env) {
         this.env = env;
+    }
+
+    public void setEnabledEnvs(final String envs)
+    {
+        if((envs != null) && !envs.isEmpty())
+            Collections.addAll(enabledEnvs, envs.split(","));
     }
 
     public boolean isOnlyThrowable() {
